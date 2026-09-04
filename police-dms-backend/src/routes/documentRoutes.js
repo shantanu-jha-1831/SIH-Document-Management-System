@@ -9,7 +9,8 @@ const {
     getDocumentFile,
     checkDocumentIntegrity,
     verifyDocumentIntegrity,
-    deleteDocument
+    deleteDocument,
+    checkDocumentFile
 } = require("../controllers/documentController");
 
 const {
@@ -49,6 +50,9 @@ router.get(
     "/:id/integrity",
     checkDocumentIntegrity
 );
+
+
+router.get("/:id/check-file", checkDocumentFile);
 
 // ===============================
 // Verify document integrity

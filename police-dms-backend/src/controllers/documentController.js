@@ -1666,26 +1666,66 @@ const deleteDocument = async (req, res) => {
 };
 
 
+
+const checkDocumentFile = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const document = await Document.findById(id);
+
+        if (!document) {
+            return res.status(404).json({
+                success: false,
+                message: "Document not found"
+            });
+        }
+
+        const filePath = path.join(
+            __dirname,
+            "../../",
+            document.fileUrl
+        );
+
+        return res.status(200).json({
+            success: true,
+            documentId: document.documentId,
+            fileUrl: document.fileUrl,
+            resolvedPath: filePath,
+            fileExists: fs.existsSync(filePath),
+            uploadsDirectory: path.join(
+                __dirname,
+                "../../uploads"
+            )
+        });
+
+    } catch (error) {
+        console.error("Check document file error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message
+        });
+    }
+};
+
+
+
+
+
+
 // =====================================================
 // EXPORTS
 // =====================================================
 
 module.exports = {
-
     getAllDocuments,
-
     getMyDocuments,
-
     getDocumentById,
-
     createDocument,
-
     getDocumentFile,
-
     checkDocumentIntegrity,
-
     verifyDocumentIntegrity,
-
-    deleteDocument
-
+    deleteDocument,
+    checkDocumentFile
 };
