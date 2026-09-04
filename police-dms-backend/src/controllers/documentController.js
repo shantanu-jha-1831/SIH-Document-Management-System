@@ -1666,135 +1666,26 @@ const deleteDocument = async (req, res) => {
 };
 
 
-
-// =====================================================
-// CHECK DOCUMENT FILE - DIAGNOSTIC
-// =====================================================
-
-const checkDocumentFile = async (req, res) => {
-    try {
-
-        const { id } = req.params;
-
-        // -------------------------------------------------
-        // FIND DOCUMENT
-        // -------------------------------------------------
-
-        const document = await Document.findById(id);
-
-        if (!document) {
-
-            return res.status(404).json({
-                success: false,
-                message: "Document not found"
-            });
-
-        }
-
-        // -------------------------------------------------
-        // BUILD FILE PATH
-        // -------------------------------------------------
-
-        const filePath = path.join(
-            __dirname,
-            "../../",
-            document.fileUrl
-        );
-
-        // -------------------------------------------------
-        // UPLOADS DIRECTORY
-        // -------------------------------------------------
-
-        const uploadsDirectory = path.join(
-            __dirname,
-            "../../uploads"
-        );
-
-        // -------------------------------------------------
-        // CHECK UPLOADS DIRECTORY
-        // -------------------------------------------------
-
-        let uploadFiles = [];
-
-        if (fs.existsSync(uploadsDirectory)) {
-
-            uploadFiles = fs.readdirSync(
-                uploadsDirectory
-            );
-
-        }
-
-        // -------------------------------------------------
-        // CHECK FILE
-        // -------------------------------------------------
-
-        const fileExists =
-            fs.existsSync(filePath);
-
-        // -------------------------------------------------
-        // RESPONSE
-        // -------------------------------------------------
-
-        return res.status(200).json({
-
-            success: true,
-
-            documentId:
-                document.documentId,
-
-            fileUrl:
-                document.fileUrl,
-
-            resolvedPath:
-                filePath,
-
-            fileExists,
-
-            uploadsDirectory,
-
-            uploadFiles
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Check document file error:",
-            error
-        );
-
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                "Server error",
-
-            error:
-                error.message
-
-        });
-
-    }
-};
-
-
-
-
-
-
 // =====================================================
 // EXPORTS
 // =====================================================
 
 module.exports = {
+
     getAllDocuments,
+
     getMyDocuments,
+
     getDocumentById,
+
     createDocument,
+
     getDocumentFile,
+
     checkDocumentIntegrity,
+
     verifyDocumentIntegrity,
-    deleteDocument,
-    checkDocumentFile
+
+    deleteDocument
+
 };
