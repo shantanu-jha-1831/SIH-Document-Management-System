@@ -121,7 +121,7 @@ function Documents() {
 
 
             const response = await api.get(
-                `/documents/${documentId}/verify`
+                `/documents/${documentId}/integrity`
             );
 
 
